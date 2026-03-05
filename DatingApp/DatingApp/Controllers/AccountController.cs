@@ -36,11 +36,9 @@ namespace DatingApp.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await context.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
-
             if (user == null) return Unauthorized("Invalid email address.");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
-
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
             for (var i = 0; i < computedHash.Length; i++)
