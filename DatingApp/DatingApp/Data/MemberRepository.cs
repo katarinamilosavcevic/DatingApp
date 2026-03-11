@@ -13,7 +13,7 @@ namespace DatingApp.Data
 
         public async Task<Member?> GetMemberForUpdate(string id)
         {
-            return await context.Members.Include(x => x.User).SingleOrDefaultAsync(x => x.Id == id);
+            return await context.Members.Include(x => x.User).Include(x => x.Photos).SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IReadOnlyList<Member>> GetMembersAsync()

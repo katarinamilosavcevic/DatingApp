@@ -2,3 +2,7 @@
 @plugin "daisyui" {
     themes: all
 }
+html, body {
+    height: 100%;
+    overflow: hidden;
+}

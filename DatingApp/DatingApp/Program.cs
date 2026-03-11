@@ -1,4 +1,5 @@
 using DatingApp.Data;
+using DatingApp.Helpers;
 using DatingApp.Interfaces;
 using DatingApp.Middleware;
 using DatingApp.Services;
@@ -21,7 +22,10 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 //builder.Services.AddOpenApi();
 builder.Services.AddCors();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     var tokenKey = builder.Configuration["TokenKey"] ?? throw new Exception("Token key not found - Program.cs");
@@ -45,7 +49,6 @@ app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localho
 {
     app.MapOpenApi();
 }*/
-
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

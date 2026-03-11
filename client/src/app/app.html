@@ -1,7 +1,8 @@
 <app-nav></app-nav>
 
-<div  [class.mt-24]="router.url !== '/'"
-      [class.container]="router.url !== '/'"
-      [class.mx-auto]="router.url !== '/'"  >
+<div [class.pt-24]="router.url !== '/'"
+     [class.container]="router.url !== '/'"
+     [class.mx-auto]="router.url !== '/'"
+     class="px-4">
     <router-outlet></router-outlet>
 </div>
