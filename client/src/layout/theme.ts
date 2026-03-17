@@ -18,6 +18,5 @@ export const themes = [
     "fantasy",
     "wireframe",
     "black",
-    "luxury",
-    "dracula"
+    "luxury"
 ]
