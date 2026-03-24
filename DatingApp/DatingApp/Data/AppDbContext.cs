@@ -1,8 +1,8 @@
 ﻿using DatingApp.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatingApp.Data
 {
@@ -12,6 +12,8 @@ namespace DatingApp.Data
         public DbSet<Photo> Photos { get; set; }
         public DbSet<MemberLike> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Connection> Connections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

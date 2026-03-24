@@ -5,6 +5,7 @@ using DatingApp.Helpers;
 using DatingApp.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace DatingApp.Data
 {
     public class MessageRepository(AppDbContext context) : IMessageRepository
@@ -14,14 +15,39 @@ namespace DatingApp.Data
             context.Messages.Add(message);
         }
 
+        public void AddGroup(Group group)
+        {
+            context.Groups.Add(group);
+        }
+
         public void DeleteMessage(Message message)
         {
             context.Messages.Remove(message);
         }
 
+        public async Task<Connection?> GetConnection(string connectionId)
+        {
+            return await context.Connections.FindAsync(connectionId);
+        }
+
+        public async Task<Group?> GetGroupForConnection(string connectionId)
+        {
+            return await context.Groups
+                .Include(x => x.Connections)
+                .Where(x => x.Connections.Any(c => c.ConnectionId == connectionId))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Message?> GetMessage(string messageId)
         {
             return await context.Messages.FindAsync(messageId);
+        }
+
+        public async Task<Group?> GetMessageGroup(string groupName)
+        {
+            return await context.Groups
+                .Include(x => x.Connections)
+                .FirstOrDefaultAsync(x => x.Name == groupName);
         }
 
         public async Task<PaginatedResult<MessageDto>> GetMessagesForMember(MessageParams messageParams)
@@ -54,6 +80,13 @@ namespace DatingApp.Data
                 .Select(MessageExtensions.ToDtoProjection())
                 .ToListAsync();
 
+        }
+
+        public async Task RemoveConnection(string connectionId)
+        {
+            await context.Connections
+                .Where(x => x.ConnectionId == connectionId)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<bool> SaveAllAsync()

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 
 @Injectable({
@@ -6,44 +7,59 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 })
 export class ToastService {
 
+  private router = inject(Router);
+
   private Toast = Swal.mixin({
     toast: true,
     position: 'bottom-end',        
     showConfirmButton: false,   
-    timer: 3000,                
+    timer: 5000,                
     timerProgressBar: true,     
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
   });
 
   
-  private fireToast(icon: 'success' | 'error' | 'warning' | 'info', message: string) {
+  private fireToast(icon: 'success' | 'error' | 'warning' | 'info', message: string, timer?: number, imageUrl?: string, redirectUrl?: string) {
     this.Toast.fire({
       icon: icon,
       title: message,
-      showCloseButton: true,    
-    }).then((result: SweetAlertResult) => {
-      if (result.dismiss === Swal.DismissReason.close) {
-        console.log('Toast zatvoren ručno');
+      showCloseButton: true,
+      timer: timer ?? 5000,
+      ...(imageUrl && {
+        imageUrl: imageUrl,
+        imageWidth: 40,
+        imageHeight: 40,
+        imageAlt: 'avatar',
+      }),
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+
+        if (redirectUrl) {
+          toast.style.cursor = 'pointer';
+          toast.addEventListener('click', () => {
+            Swal.close();
+            this.router.navigateByUrl(redirectUrl);
+          });
+        }
       }
     });
   }
 
-  success(message: string) {
-    this.fireToast('success', message);
+  success(message: string, timer?: number, imageUrl?: string, redirectUrl?: string) {
+    this.fireToast('success', message, timer, imageUrl, redirectUrl);
   }
 
-  error(message: string) {
-    this.fireToast('error', message);
+  error(message: string, timer?: number, imageUrl?: string, redirectUrl?: string) {
+    this.fireToast('error', message, timer, imageUrl, redirectUrl);
   }
 
-  warning(message: string) {
-    this.fireToast('warning', message);
+  warning(message: string, timer?: number, imageUrl?: string, redirectUrl?: string) {
+    this.fireToast('warning', message, timer, imageUrl, redirectUrl);
   }
 
-  info(message: string) {
-    this.fireToast('info', message);
+  info(message: string, timer?: number, imageUrl?: string, redirectUrl?: string) {
+    this.fireToast('info', message, timer, imageUrl, redirectUrl);
   }
+
+  
 }
