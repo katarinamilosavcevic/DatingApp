@@ -19,6 +19,8 @@ namespace DatingApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Photo>().HasQueryFilter(x => x.IsApproved);
+
             modelBuilder.Entity<IdentityRole>()
             .HasData(
                 new IdentityRole { Id = "member-id", Name = "Member", NormalizedName = "MEMBER", ConcurrencyStamp = "b60105f1-3c69-4c87-bae8-0ef941c42feb" },

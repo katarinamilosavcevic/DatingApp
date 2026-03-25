@@ -52,7 +52,8 @@ namespace DatingApp.Data
                 user.Member.Photos.Add(new Photo
                 {
                     Url = member.ImageUrl!,
-                    MemberId = member.Id
+                    MemberId = member.Id,
+                    IsApproved = true
                 });
 
                 var result = await userManager.CreateAsync(user, "Pa$$w0rd");

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace DatingApp.SignalR
 {
     [Authorize]
-    public class MessageHub(IMessageRepository messageRepository,IMemberRepository memberRepository, IHubContext<PresenceHub> presenceHub) : Hub
+    public class MessageHub(IUnitOfWork uow, IHubContext<PresenceHub> presenceHub) : Hub
     {
 
         public override async Task OnConnectedAsync()
@@ -19,15 +19,15 @@ namespace DatingApp.SignalR
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await AddToGroup(groupName);
 
-            var messages = await messageRepository.GetMessageThread(GetUserId(), otherUser);
+            var messages = await uow.MessageRepository.GetMessageThread(GetUserId(), otherUser);
 
             await Clients.Group(groupName).SendAsync("ReceiveMessageThread", messages);
         }
 
         public async Task SendMessage(CreateMessageDto createMessageDto)
         {
-            var sender = await memberRepository.GetMemberByIdAsync(GetUserId());
-            var recipient = await memberRepository.GetMemberByIdAsync(createMessageDto.RecipientId);
+            var sender = await uow.MemberRepository.GetMemberByIdAsync(GetUserId());
+            var recipient = await uow.MemberRepository.GetMemberByIdAsync(createMessageDto.RecipientId);
 
             if (recipient == null || sender == null || sender.Id == createMessageDto.RecipientId) throw new HubException("Cannot send message");
 
@@ -39,7 +39,7 @@ namespace DatingApp.SignalR
             };
 
             var groupName = GetGroupName(sender.Id, recipient.Id);
-            var group = await messageRepository.GetMessageGroup(groupName);
+            var group = await uow.MessageRepository.GetMessageGroup(groupName);
             var userInGroup = group != null && group.Connections.Any(x => x.UserId == message.RecipientId);
 
             if (userInGroup)
@@ -47,9 +47,9 @@ namespace DatingApp.SignalR
                 message.DateRead = DateTime.UtcNow;
             }
 
-            messageRepository.AddMessage(message);
+            uow.MessageRepository.AddMessage(message);
 
-            if (await messageRepository.SaveAllAsync())
+            if (await uow.Complete())
             {
                 await Clients.Group(groupName).SendAsync("NewMessage", message.ToDto());
                 var connections = await PresenceTracker.GetConnectionsForUser(recipient.Id);
@@ -65,7 +65,7 @@ namespace DatingApp.SignalR
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            await messageRepository.RemoveConnection(Context.ConnectionId);
+            await uow.MessageRepository.RemoveConnection(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -73,18 +73,18 @@ namespace DatingApp.SignalR
 
         private async Task<bool> AddToGroup(string groupName)
         {
-            var group = await messageRepository.GetMessageGroup(groupName);
+            var group = await uow.MessageRepository.GetMessageGroup(groupName);
             var connection = new Connection(Context.ConnectionId, GetUserId());
 
             if (group == null)
             {
                 group = new Group(groupName);
-                messageRepository.AddGroup(group);
+                uow.MessageRepository.AddGroup(group);
             }
 
             group.Connections.Add(connection);
 
-            return await messageRepository.SaveAllAsync();
+            return await uow.Complete();
         }
 
         private static string GetGroupName(string? caller, string? other)
