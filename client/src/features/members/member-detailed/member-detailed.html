@@ -8,8 +8,8 @@
                     <div class="flex text-2xl text-primary items-center">
                         {{member.displayName}}, {{member.dateOfBirth | age}}
                         @if (presenceService.onlineUsers().includes(member.id)) {
-                        <span class="status status-success status-xl ml-3"></span>
-                    }
+                            <span class="status status-success status-xl ml-3"></span>
+                        }
                     </div>
 
                     <div class="text-sm">
@@ -22,7 +22,9 @@
                 <ul class="menu rounded-box w-full text-xl">
                     <li><a routerLink="profile" routerLinkActive="text-primary">Profile</a></li>
                     <li><a routerLink="photos" routerLinkActive="text-primary">Photos</a></li>
-                    <li><a routerLink="messages" routerLinkActive="text-primary">Messages</a></li>
+                    @if (!isCurrentUser()) {
+                        <li><a routerLink="messages" routerLinkActive="text-primary">Messages</a></li>
+                    }
                 </ul>
             </div>
             <div class="card-actions justify-between gap-2 px-2 mb-3 mt-auto">
@@ -32,7 +34,9 @@
                     [class.btn-error]="hasLiked()"
                     [class.btn-success]="!hasLiked()"
                     class="btn flex-1"
-                >{{hasLiked() ? 'Remove like' : 'Like user'}}</button>
+                >
+                    {{hasLiked() ? 'Remove like' : 'Like user'}}
+                </button>
             </div>
         </div>
 
