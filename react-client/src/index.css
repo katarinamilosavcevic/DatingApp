@@ -1,0 +1,6 @@
+
+@import "tailwindcss";
+
+input, button, select, textarea {
+  pointer-events: auto;
+}
