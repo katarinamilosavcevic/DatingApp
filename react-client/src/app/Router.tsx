@@ -4,6 +4,10 @@ import HomePage from '../pages/HomePage';
 import NotFoundPage from '../pages/NotFoundPage';
 import ServerErrorPage from '../pages/ServerErrorPage';
 import Navbar from '../features/nav/Navbar';
+import MemberListPage from '../features/members/MemberListPage';
+import MemberDetailPage from '../features/members/MemberDetailPage';
+import MemberProfileTab from '../features/members/MemberProfileTab';
+import MemberPhotosTab from '../features/members/MemberPhotosTab';
 
 function ProtectedRoute() {
   const { currentUser, loading } = useAuth();
@@ -41,8 +45,14 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { path: 'members', element: <div>Member List</div> },
-          { path: 'members/:id', element: <div>Member Detail</div> },
+          { path: 'members', element: <MemberListPage /> },
+          { path: 'members/:id', element: <MemberDetailPage />,
+            children: [
+              { index: true, element: <Navigate to="profile" replace /> },
+              { path: 'profile', element: <MemberProfileTab /> },
+              { path: 'photos', element: <MemberPhotosTab /> },
+              { path: 'messages', element: <div>Messages tab </div> },
+            ] },
           { path: 'lists', element: <div>Lists</div> },
           { path: 'messages', element: <div>Messages</div> },
           {
