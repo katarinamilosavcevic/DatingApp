@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../app/AuthContext';
+import { toast } from '../../services/toast';
 
 export default function Navbar() {
     const { currentUser, login, logout } = useAuth();
@@ -31,8 +32,9 @@ export default function Navbar() {
             navigate('/members');
             setEmail('');
             setPassword('');
+            toast.success('Logged in successfully');
         } catch {
-            alert('Pogrešan email ili lozinka');
+            toast.error('Pogrešan email ili lozinka');
         } finally {
             setLoading(false);
         }

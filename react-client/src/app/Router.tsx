@@ -3,19 +3,18 @@ import { useAuth } from './AuthContext';
 import HomePage from '../pages/HomePage';
 import NotFoundPage from '../pages/NotFoundPage';
 import ServerErrorPage from '../pages/ServerErrorPage';
-import Navbar from '../features/nav/NavBar';
+import Navbar from '../features/nav/Navbar';
 
 function ProtectedRoute() {
   const { currentUser, loading } = useAuth();
-  if (loading) return <p>Učitavanje...</p>;
+  if (loading) return <p>Loading...</p>;
   if (!currentUser) return <Navigate to="/" replace />;
   return <Outlet />;
 }
 
 function AdminRoute() {
   const { currentUser } = useAuth();
-  const isAdmin = currentUser?.roles.includes('Admin') || 
-                  currentUser?.roles.includes('Moderator');
+  const isAdmin = currentUser?.roles.includes('Admin') ||  currentUser?.roles.includes('Moderator');
   if (!isAdmin) return <Navigate to="/" replace />;
   return <Outlet />;
 }
@@ -37,7 +36,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'errors', element: <div>Test Errors stranica</div> },
+      { path: 'errors', element: <div>Test Errors page</div> },
       { path: 'server-error', element: <ServerErrorPage /> },
       {
         element: <ProtectedRoute />,
