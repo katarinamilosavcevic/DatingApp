@@ -11,6 +11,9 @@ import MemberPhotosTab from '../features/members/MemberPhotosTab';
 import ListsPage from '../pages/ListsPage';
 import MessagesPage from '../pages/MessagesPage';
 import AdminPage from '../pages/AdminPage';
+import MemberMessagesTab from '../features/members/MemberMessagesTab';
+import LoadingSpinner from '../shared/LoadingSpinner';
+import { useLoading } from '../hooks/useLoading';
 
 function ProtectedRoute() {
   const { currentUser, loading } = useAuth();
@@ -27,9 +30,15 @@ function AdminRoute() {
 }
 
 function Layout() {
+  const { loading: authLoading } = useAuth();
+  const apiLoading = useLoading();
+
+  if (authLoading) return <LoadingSpinner />;
+
   return (
     <div className="h-screen overflow-hidden">
       <Navbar />
+      {apiLoading && <LoadingSpinner />}
       <main className="pt-24 px-6 h-full overflow-y-auto">
         <Outlet />
       </main>
@@ -43,7 +52,6 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'errors', element: <div>Test Errors page</div> },
       { path: 'server-error', element: <ServerErrorPage /> },
       {
         element: <ProtectedRoute />,
@@ -54,7 +62,7 @@ const router = createBrowserRouter([
               { index: true, element: <Navigate to="profile" replace /> },
               { path: 'profile', element: <MemberProfileTab /> },
               { path: 'photos', element: <MemberPhotosTab /> },
-              { path: 'messages', element: <div>Messages tab </div> },
+              { path: 'messages',  element: <MemberMessagesTab /> },
             ] },
           { path: 'lists', element: <ListsPage /> },
           { path: 'messages', element: <MessagesPage /> },

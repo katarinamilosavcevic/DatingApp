@@ -9,12 +9,13 @@ type OutletContext = {
     member: Member;
     setMember: (member: Member) => void;
     editMode: boolean;
+    setEditMode: (val: boolean) => void;
 };
 
 
 export default function MemberPhotosTab() {
 
-    const { member, setMember, editMode } = useOutletContext<OutletContext>();
+    const { member, setMember, editMode, setEditMode } = useOutletContext<OutletContext>();
     const { currentUser, setCurrentUser } = useAuth();
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [uploadLoading, setUploadLoading] = useState(false);
@@ -36,6 +37,7 @@ export default function MemberPhotosTab() {
             setMainLocalPhoto(newPhoto);
         }
         setUploadLoading(false);
+        setEditMode(false);
     };
 
     const setMainPhoto = async (photo: Photo) => {
@@ -79,8 +81,7 @@ export default function MemberPhotosTab() {
                                 <button
                                     disabled={photo.url === member.imageUrl || !photo.isApproved}
                                     onClick={() => setMainPhoto(photo)}
-                                    className={`absolute top-1 right-1 rounded-full w-7 h-7 flex items-center justify-center disabled:opacity-30 cursor-pointer
-    ${photo.url === member.imageUrl ? 'bg-yellow-400 text-white' : 'bg-white text-gray-400'}`}>
+                                    className={`absolute top-1 right-1 rounded-full w-7 h-7 flex items-center justify-center disabled:opacity-30 cursor-pointer ${photo.url === member.imageUrl ? 'bg-yellow-400 text-white' : 'bg-white text-gray-400'}`}>
                                     ★
                                 </button>
                                 <button

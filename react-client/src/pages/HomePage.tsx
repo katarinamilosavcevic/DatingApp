@@ -23,9 +23,6 @@ export default function HomePage() {
                 Register
               </button>
             )}
-            <button className="px-6 py-3 bg-cyan-500 text-white rounded-lg text-lg hover:bg-cyan-600 cursor-pointer">
-              Learn more
-            </button>
           </div>
         </div>
       ) : (

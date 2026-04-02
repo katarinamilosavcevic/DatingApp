@@ -95,21 +95,21 @@ export default function RegisterForm({ onCancel }: Props) {
             </div>
 
             {currentStep === 1 && (
-                <form className="flex flex-col gap-4">
+                <form className="flex flex-col gap-4" autoComplete="off">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                         <input {...register('email', {
                             required: 'Email is required',
                             pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' }
                         })}
-                            type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
+                            type="text" autoComplete="off" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
                         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Display name</label>
                         <input {...register('displayName', { required: 'Display name is required' })}
-                            type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
+                            type="text" autoComplete="off" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
                         {errors.displayName && <p className="text-red-500 text-xs mt-1">{errors.displayName.message}</p>}
                     </div>
 
@@ -120,7 +120,7 @@ export default function RegisterForm({ onCancel }: Props) {
                             minLength: { value: 4, message: 'Min 4 characters' },
                             maxLength: { value: 8, message: 'Max 8 characters' }
                         })}
-                            type="password" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
+                            type="password" autoComplete="off" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
                     </div>
 
@@ -130,7 +130,7 @@ export default function RegisterForm({ onCancel }: Props) {
                             required: 'Please confirm password',
                             validate: value => value === password || 'Passwords do not match'
                         })}
-                            type="password" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
+                            type="password" autoComplete="off" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
                         {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
                     </div>
 
@@ -149,7 +149,7 @@ export default function RegisterForm({ onCancel }: Props) {
 
             
             {currentStep === 2 && (
-                <form onSubmit={handleSubmitProfile(onRegister)} className="flex flex-col gap-4">
+                <form onSubmit={handleSubmitProfile(onRegister)} className="flex flex-col gap-4" autoComplete="off">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
                         <div className="flex gap-6">
@@ -175,14 +175,14 @@ export default function RegisterForm({ onCancel }: Props) {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
                         <input {...registerProfile('city', { required: 'City is required' })}
-                            type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
+                            type="text" autoComplete="off" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
                         {profileErrors.city && <p className="text-red-500 text-xs mt-1">{profileErrors.city.message}</p>}
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
                         <input {...registerProfile('country', { required: 'Country is required' })}
-                            type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
+                            type="text" autoComplete="off" className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none" />
                         {profileErrors.country && <p className="text-red-500 text-xs mt-1">{profileErrors.country.message}</p>}
                     </div>
 

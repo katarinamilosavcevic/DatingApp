@@ -4,6 +4,7 @@ import { useAuth } from "../../app/AuthContext";
 import { useEffect, useState } from "react";
 import { calculateAge } from "../../utils/age";
 import { useLikes } from "../../hooks/useLikes";
+import { usePresence } from "../../app/PresenceContext";
 
 
 export default function MemberDetailPage() {
@@ -14,9 +15,8 @@ export default function MemberDetailPage() {
     const navigate = useNavigate();
     const [editMode, setEditMode] = useState(false);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+    const { onlineUsers } = usePresence();
 
-    const isCurrentUser = currentUser?.id === member?.id;
-    const hasLiked = likeIds.includes(id!);
 
     useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -34,6 +34,14 @@ export default function MemberDetailPage() {
         return false;
     });
 
+
+    if (loading) return <p>Loading...</p>;
+    if (!member) return <p>Member not found</p>;
+
+    const isOnline = onlineUsers.includes(member.id);
+    const isCurrentUser = currentUser?.id === member?.id;
+    const hasLiked = likeIds.includes(id!);
+
     const handleTabChange = () => {
         if (hasUnsavedChanges) {
             const ok = confirm('Are you sure you want to continue? All unsaved changes will be lost.');
@@ -44,9 +52,6 @@ export default function MemberDetailPage() {
         return true;
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (!member) return <p>Member not found</p>;
-
     return (
         <div className="flex gap-6">
             <div className="flex flex-col w-1/4 bg-white rounded-lg shadow p-4">
@@ -54,6 +59,9 @@ export default function MemberDetailPage() {
                 <div className="flex flex-col items-center mt-4">
                     <div className="flex text-2xl text-purple-600 items-center gap-2">
                         {member.displayName}, {calculateAge(member.dateOfBirth)}
+                        {isOnline && (
+                            <span className="w-3 h-3 bg-green-500 rounded-full inline-block" />
+                        )}
                     </div>
                     <div className="text-sm text-gray-500">
                         {member.city}, {member.country}

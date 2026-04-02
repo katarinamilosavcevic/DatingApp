@@ -12,7 +12,7 @@ export default function Navbar() {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
-    const isAdminOrMod = currentUser?.roles.includes('Admin') || currentUser?.roles.includes('Moderator');
+    const isAdminOrMod = currentUser?.roles?.includes('Admin') || currentUser?.roles?.includes('Moderator');
 
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
@@ -67,7 +67,6 @@ export default function Navbar() {
                             )}
                         </>
                     )}
-                    <NavLink to="/errors" className="text-white no-underline hover:text-purple-300">Errors</NavLink>
                 </nav>
 
                 <div className="flex items-center ml-auto gap-3">
