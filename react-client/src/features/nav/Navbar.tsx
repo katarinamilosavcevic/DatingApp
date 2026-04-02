@@ -34,7 +34,7 @@ export default function Navbar() {
             setPassword('');
             toast.success('Logged in successfully');
         } catch {
-            toast.error('Pogrešan email ili lozinka');
+            toast.error('Invalid email or password');
         } finally {
             setLoading(false);
         }

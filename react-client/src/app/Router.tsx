@@ -8,6 +8,9 @@ import MemberListPage from '../features/members/MemberListPage';
 import MemberDetailPage from '../features/members/MemberDetailPage';
 import MemberProfileTab from '../features/members/MemberProfileTab';
 import MemberPhotosTab from '../features/members/MemberPhotosTab';
+import ListsPage from '../pages/ListsPage';
+import MessagesPage from '../pages/MessagesPage';
+import AdminPage from '../pages/AdminPage';
 
 function ProtectedRoute() {
   const { currentUser, loading } = useAuth();
@@ -25,9 +28,9 @@ function AdminRoute() {
 
 function Layout() {
   return (
-    <div className="min-h-screen">
+    <div className="h-screen overflow-hidden">
       <Navbar />
-      <main className="pt-24 px-6">
+      <main className="pt-24 px-6 h-full overflow-y-auto">
         <Outlet />
       </main>
     </div>
@@ -53,12 +56,12 @@ const router = createBrowserRouter([
               { path: 'photos', element: <MemberPhotosTab /> },
               { path: 'messages', element: <div>Messages tab </div> },
             ] },
-          { path: 'lists', element: <div>Lists</div> },
-          { path: 'messages', element: <div>Messages</div> },
+          { path: 'lists', element: <ListsPage /> },
+          { path: 'messages', element: <MessagesPage /> },
           {
             element: <AdminRoute />,
             children: [
-              { path: 'admin', element: <div>Admin</div> }
+              { path: 'admin',  element: <AdminPage /> }
             ]
           }
         ]

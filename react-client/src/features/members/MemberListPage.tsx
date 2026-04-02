@@ -24,7 +24,7 @@ export default function MemberListPage(){
 
         filters.push(memberParams.orderBy === 'lastActive' ? 'Recently active' : 'Newest members');
 
-        return `Selected: ${filters.join('|')}`;
+        return `Selected: ${filters.join(' | ')}`;
     };
 
 

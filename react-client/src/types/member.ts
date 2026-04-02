@@ -27,3 +27,10 @@ export type MemberParams = {
   pageSize: number;
   orderBy: string;
 };
+
+export type EditableMember = {
+  displayName: string;
+  description?: string;
+  city: string;
+  country: string;
+};

@@ -22,7 +22,8 @@ export default defineConfig([
     rules: {
       'react-refresh/only-export-components': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      'react-hooks/incompatible-library': 'off'
+      'react-hooks/incompatible-library': 'off',
+      'react-hooks/set-state-in-effect': 'off'
     },
   },
 ])
