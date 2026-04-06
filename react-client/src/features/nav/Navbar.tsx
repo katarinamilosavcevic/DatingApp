@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../app/AuthContext';
 import { toast } from '../../services/toast';
+import { useLoading } from '../../hooks/useLoading';
 
 export default function Navbar() {
     const { currentUser, login, logout } = useAuth();
@@ -11,6 +12,7 @@ export default function Navbar() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
+    const apiLoading = useLoading();
 
     const isAdminOrMod = currentUser?.roles?.includes('Admin') || currentUser?.roles?.includes('Moderator');
 
@@ -68,6 +70,10 @@ export default function Navbar() {
                         </>
                     )}
                 </nav>
+
+                {apiLoading && (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                )}
 
                 <div className="flex items-center ml-auto gap-3">
                     {currentUser ? (

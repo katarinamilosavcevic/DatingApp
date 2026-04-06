@@ -13,7 +13,6 @@ import MessagesPage from '../pages/MessagesPage';
 import AdminPage from '../pages/AdminPage';
 import MemberMessagesTab from '../features/members/MemberMessagesTab';
 import LoadingSpinner from '../shared/LoadingSpinner';
-import { useLoading } from '../hooks/useLoading';
 
 function ProtectedRoute() {
   const { currentUser, loading } = useAuth();
@@ -31,14 +30,13 @@ function AdminRoute() {
 
 function Layout() {
   const { loading: authLoading } = useAuth();
-  const apiLoading = useLoading();
+ 
 
   if (authLoading) return <LoadingSpinner />;
 
   return (
     <div className="h-screen overflow-hidden">
       <Navbar />
-      {apiLoading && <LoadingSpinner />}
       <main className="pt-24 px-6 h-full overflow-y-auto">
         <Outlet />
       </main>
