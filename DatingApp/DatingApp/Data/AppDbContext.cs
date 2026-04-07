@@ -14,6 +14,8 @@ namespace DatingApp.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
+        public DbSet<BlockedUser> BlockedUsers { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +58,34 @@ namespace DatingApp.Data
                 .WithMany(t => t.LikedByMembers)
                 .HasForeignKey(s => s.TargetMemberId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<BlockedUser>().HasKey(x => new { x.SourceMemberId, x.TargetMemberId });
+
+            modelBuilder.Entity<BlockedUser>()
+                .HasOne(s => s.SourceMember)
+                .WithMany(m => m.BlockedUsers)
+                .HasForeignKey(s => s.SourceMemberId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<BlockedUser>()
+                .HasOne(s => s.TargetMember)
+                .WithMany()
+                .HasForeignKey(s => s.TargetMemberId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.Reporter)
+                .WithMany()
+                .HasForeignKey(r => r.ReporterId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.ReportedUser)
+                .WithMany()
+                .HasForeignKey(r => r.ReportedUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
 
             var dateTimeConverter = new ValueConverter<DateTime, DateTime>(

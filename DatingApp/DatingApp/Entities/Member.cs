@@ -31,6 +31,9 @@ namespace DatingApp.Entities
         [JsonIgnore]
         public List<Message> MessageReceived { get; set; } = [];
 
+        [JsonIgnore]
+        public List<BlockedUser> BlockedUsers { get; set; } = [];
+
         //[ForeignKey(nameof(Id))]
         [JsonIgnore]
         public AppUser User { get; set; } = null!;

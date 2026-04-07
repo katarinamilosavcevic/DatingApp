@@ -9,13 +9,15 @@ namespace DatingApp.Data
         private IMessageRepository? _messageRepository;
         private ILikesRepository? _likesRepository;
         private IPhotoRepository? _photoRepository;
+        private IBlockingRepository? _blockingRepository;
+        private IReportRepository? _reportRepository;
 
         public IMemberRepository MemberRepository => _memberRepository ??= new MemberRepository(context);
-
         public IMessageRepository MessageRepository => _messageRepository ??= new MessageRepository(context);
-
         public ILikesRepository LikesRepository => _likesRepository ??= new LikesRepository(context);
         public IPhotoRepository PhotoRepository => _photoRepository ??= new PhotoRepository(context);
+        public IBlockingRepository BlockingRepository => _blockingRepository  ??= new BlockingRepository(context);
+        public IReportRepository ReportRepository => _reportRepository ??= new ReportRepository(context);
 
 
         public async Task<bool> Complete()

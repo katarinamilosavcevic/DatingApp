@@ -101,7 +101,7 @@ export default function MemberMessagesTab() {
                         <div className="text-xs text-gray-400 mt-1">
                             {message.currentUserSender
                                 ? message.dateRead ? 'Seen' : 'Not read'
-                                : 'Delivered'}
+                                : ''}
                         </div>
                     </div>
                 ))}

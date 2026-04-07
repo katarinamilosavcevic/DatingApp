@@ -30,6 +30,13 @@ namespace DatingApp.Data
             var query = context.Members.AsQueryable();
             query = query.Where(x => x.Id != memberParams.CurrentMemberId);
 
+            var blockedIds = await context.BlockedUsers
+                    .Where(x => x.SourceMemberId == memberParams.CurrentMemberId || x.TargetMemberId == memberParams.CurrentMemberId)
+                    .Select(x => x.SourceMemberId == memberParams.CurrentMemberId ? x.TargetMemberId : x.SourceMemberId)
+                    .ToListAsync();
+
+            if (blockedIds.Count > 0) query = query.Where(x => !blockedIds.Contains(x.Id));
+
             if (memberParams.Gender != null) {
                 query = query.Where(x => x.Gender == memberParams.Gender);
             }
