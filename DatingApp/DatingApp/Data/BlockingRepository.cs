@@ -1,4 +1,5 @@
 ﻿using DatingApp.Entities;
+using DatingApp.Helpers;
 using DatingApp.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,12 +19,13 @@ namespace DatingApp.Data
             return await context.SaveChangesAsync() > 0;
         }
 
-        public async Task<IReadOnlyList<Member>> GetBlockedMembersAsync(string memberId)
+        public async Task<PaginatedResult<Member>> GetBlockedMembersAsync(BlockingParams blockingParams)
         {
-            return await context.BlockedUsers
-                .Where(x => x.SourceMemberId == memberId)
-                .Select(x => x.TargetMember)
-                .ToListAsync();
+            var query = context.BlockedUsers
+                .Where(x => x.SourceMemberId == blockingParams.MemberId)
+                .Select(x => x.TargetMember);
+
+            return await PaginationHelper.CreateAsync(query, blockingParams.PageNumber, blockingParams.PageSize);
         }
 
         public async Task<IReadOnlyList<string>> GetBlockedUserIdsAsync(string memberId)

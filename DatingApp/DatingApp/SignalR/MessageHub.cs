@@ -31,6 +31,9 @@ namespace DatingApp.SignalR
 
             if (recipient == null || sender == null || sender.Id == createMessageDto.RecipientId) throw new HubException("Cannot send message");
 
+            var isBlocked = await uow.BlockingRepository.IsEitherBlockedAsync(sender.Id, recipient.Id);
+            if (isBlocked) throw new HubException("Cannot send message to this user");
+
             var message = new Message
             {
                 SenderId = sender.Id,

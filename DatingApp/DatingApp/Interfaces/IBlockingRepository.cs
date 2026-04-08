@@ -1,4 +1,5 @@
 ﻿using DatingApp.Entities;
+using DatingApp.Helpers;
 
 namespace DatingApp.Interfaces
 {
@@ -9,6 +10,6 @@ namespace DatingApp.Interfaces
         Task<bool> IsBlockedAsync(string sourceId, string targetId);
         Task<bool> IsEitherBlockedAsync(string userId1, string userId2);
         Task<IReadOnlyList<string>> GetBlockedUserIdsAsync(string memberId);
-        Task<IReadOnlyList<Member>> GetBlockedMembersAsync(string memberId);
+        Task<PaginatedResult<Member>> GetBlockedMembersAsync(BlockingParams blockingParams);
     }
 }

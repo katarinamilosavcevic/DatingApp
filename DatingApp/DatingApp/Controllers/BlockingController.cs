@@ -1,4 +1,5 @@
 ﻿using DatingApp.Extensions;
+using DatingApp.Helpers;
 using DatingApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,12 +51,12 @@ namespace DatingApp.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult> GetBlockedUsers()
+        public async Task<ActionResult> GetBlockedUsers([FromQuery] BlockingParams blockingParams)
         {
-            var memberId = User.GetMemberId();
-            var members = await uow.BlockingRepository.GetBlockedMembersAsync(memberId);
+            blockingParams.MemberId = User.GetMemberId();
+            var result = await uow.BlockingRepository.GetBlockedMembersAsync(blockingParams);
 
-            return Ok(members);
+            return Ok(result);
         }
 
 
