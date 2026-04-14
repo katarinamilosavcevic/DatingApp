@@ -13,7 +13,7 @@ export default function MemberDetailPage() {
     const {id} = useParams<{id: string}>();
     const {member, setMember, loading} = useMember(id!);
     const {currentUser} = useAuth();
-     const { likeIds, toggleLike } = useLikes();
+    const { likeIds, toggleLike } = useLikes();
     const navigate = useNavigate();
     const [editMode, setEditMode] = useState(false);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);

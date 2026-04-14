@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="DatingApp.Tests/DatingApp.Tests.csproj" Id="83ea2fb1-b9b3-4b64-ae23-35159d0abe3a" />
   <Project Path="DatingApp/DatingApp.csproj" />
 </Solution>
